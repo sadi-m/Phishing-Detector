@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Админ панель</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    background: #171717;
+    border-bottom: 1px solid #333;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.logout {
+    padding: 10px 18px;
+    background: #252525;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.logout:hover {
+    background: #c62828;
+}
+
+.container {
+    width: 95%;
+    max-width: 1600px;
+    margin: 30px auto;
+}
+
+.card {
+    background: #171717;
+    padding: 25px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 20px #000;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    min-width: 1300px;
+    border-collapse: collapse;
+}
+
+th {
+    background: #252525;
+    color: #ddd;
+    position: sticky;
+    top: 0;
+}
+
+td,
+th {
+    padding: 12px;
+    border-bottom: 1px solid #333;
+    text-align: left;
+    white-space: nowrap;
+}
+
+tr:hover {
+    background: #202020;
+}
+
+.admin {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.user {
+    color: #aaa;
+}
+
+.location {
+    color: #64b5f6;
+}
+
+.small {
+    font-size: 11px;
+    color: #888;
+    max-width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 700px) {
+
+    .header {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .container {
+        width: 96%;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+}
+
+.users{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+
+.user-card{
+
+    background:#171717;
+    padding:25px;
+    border-radius:20px;
+
+    box-shadow:0 0 20px #000;
+
+}
+
+
+.actions{
+
+    display:flex;
+    gap:15px;
+
+}
+
+
+.admin-btn{
+
+    background:#7b1fa2;
+    color:white;
+
+    padding:10px 20px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+}
+
+
+.delete-btn{
+
+    background:#d32f2f;
+
+    color:white;
+
+    padding:10px 20px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+}
+
+
+.admin-btn:hover{
+
+    background:#9c27b0;
+
+}
+
+
+.delete-btn:hover{
+
+    background:#f44336;
+
+}
+
+.export-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 20px 0 30px;
+}
+
+.export-btn {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 12px;
+    background: #252525;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: .3s;
+}
+
+.export-btn:hover {
+    background: #ffd700;
+    color: #111;
+    transform: translateY(-2px);
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="export-buttons">
+
+    <a href="/admin/export/users" class="export-btn">
+        📥 Скачать пользователей
+    </a>
+
+    <a href="/admin/export/scans" class="export-btn">
+        📊 Скачать историю проверок
+    </a>
+
+</div>
+
+<div class="header">
+
+<h1>
+👑 Админ панель
+</h1>
+
+<a
+    class="logout"
+    href="/logout"
+>
+    Выйти
+</a>
+
+</div>
+
+
+<div class="container">
+
+
+<div class="card">
+
+<h2>
+👤 Пользователи
+</h2>
+
+<div class="table-wrapper">
+
+<table>
+
+<tr>
+
+<th>ID</th>
+
+<th>Имя</th>
+
+<th>Роль</th>
+
+<th>IP</th>
+
+<th>Устройство</th>
+
+<th>ОС</th>
+
+<th>Браузер</th>
+
+<th>Язык</th>
+
+<th>Регистрация</th>
+
+<th>Последний вход</th>
+
+<th>Местоположение</th>
+
+<th>User-Agent</th>
+
+</tr>
+
+
+{% for user in users %}
+
+<tr>
+
+<td>
+{{ user.id }}
+</td>
+
+<td>
+{{ user.username }}
+</td>
+
+<td class="{{ 'admin' if user.role == 'admin' else 'user' }}">
+{{ user.role }}
+</td>
+
+<td>
+{{ user.ip_address or 'Не определён' }}
+</td>
+
+<td>
+{{ user.device or 'Не определено' }}
+</td>
+
+<td>
+{{ user.operating_system or 'Не определена' }}
+</td>
+
+<td>
+{{ user.browser or 'Не определён' }}
+</td>
+
+<td>
+{{ user.language or 'Не определён' }}
+</td>
+
+<td>
+{{ user.created_at }}
+</td>
+
+<td>
+{{ user.last_login or 'Ещё не входил' }}
+</td>
+
+<td class="location">
+
+{% if user.latitude is not none and user.longitude is not none %}
+
+<a
+    href="https://www.google.com/maps?q={{ user.latitude }},{{ user.longitude }}"
+    target="_blank"
+    style="color:#64b5f6"
+>
+    📍 {{ user.latitude }}, {{ user.longitude }}
+</a>
+
+{% else %}
+
+Не предоставлено
+
+{% endif %}
+
+</td>
+
+<td class="small">
+{{ user.user_agent or 'Нет данных' }}
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+🔎 История проверок
+</h2>
+
+<div class="table-wrapper">
+
+<table>
+
+<tr>
+
+<th>ID</th>
+
+<th>Пользователь</th>
+
+<th>URL</th>
+
+<th>Домен</th>
+
+<th>Оценка</th>
+
+<th>Риск</th>
+
+<th>Дата</th>
+
+</tr>
+
+
+{% for scan in scans %}
+
+<tr>
+
+<td>
+{{ scan.id }}
+</td>
+
+<td>
+{{ scan.username or scan.user_id }}
+</td>
+
+<td>
+{{ scan.url }}
+</td>
+
+<td>
+{{ scan.domain }}
+</td>
+
+<td>
+{{ scan.score }}
+</td>
+
+<td>
+{{ scan.risk }}
+</td>
+
+<td>
+{{ scan.created_at }}
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+{% for user in users %}
+
+<div class="user-card">
+
+<h3>
+👤 {{user.username}}
+</h3>
+
+<p>
+Роль:
+{{user.role}}
+</p>
+
+
+<a href="/admin/make_admin/{{user.id}}">
+👑 Сделать админом
+</a>
+
+
+<a href="/admin/delete_user/{{user.id}}">
+❌ Удалить
+</a>
+
+
+</div>
+
+{% endfor %}
+
+</div>
+{% for review in reviews %}
+
+<div>
+
+<p>
+{{review.username}}
+</p>
+
+<p>
+{{review.text}}
+</p>
+
+
+<a href="/admin/delete_review/{{review.id}}">
+❌ Удалить отзыв
+</a>
+
+
+</div>
+
+{% endfor %}
+</body>
+<h2>Пользователи</h2>
+
+<div class="users">
+
+{% for user in users %}
+
+<div class="user-card">
+
+    <h3>
+        👤 {{ user.username }}
+    </h3>
+
+    <p>
+        Роль:
+        {% if user.role == "admin" %}
+            👑 Админ
+        {% else %}
+            👤 Пользователь
+        {% endif %}
+    </p>
+
+
+    <div class="actions">
+
+        {% if user.role != "admin" %}
+
+        <a class="admin-btn"
+        href="/make_admin/{{ user.id }}">
+            👑 Сделать админом
+        </a>
+
+        {% endif %}
+
+
+        {% if user.username != "Sadi" %}
+
+        <a class="delete-btn"
+        href="/delete_user/{{ user.id }}"
+        onclick="return confirm('Удалить пользователя?')">
+            🗑 Удалить
+        </a>
+
+        {% endif %}
+
+    </div>
+
+
+</div>
+
+{% endfor %}
+
+</div>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Регистрация</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    font-family: Arial, sans-serif;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 30px;
+    width: 350px;
+    background: #171717;
+    border-radius: 25px;
+    box-shadow: 0 0 25px #000;
+}
+
+#heading {
+    text-align: center;
+    color: white;
+    font-size: 25px;
+    margin: 10px 0 20px;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px;
+    border-radius: 25px;
+    background: #0f0f0f;
+    box-shadow: inset 2px 5px 10px #000;
+}
+
+.input-icon {
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+
+.input-field {
+    width: 100%;
+    background: none;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 15px;
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.button1,
+.button2,
+.button3 {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #252525;
+    color: white;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.button1:hover {
+    background: #1976d2;
+}
+
+.button2:hover {
+    background: #2e7d32;
+}
+
+.button3:hover {
+    background: #d32f2f;
+}
+
+a {
+    text-decoration: none;
+}
+
+.error {
+    color: #ff5252;
+    text-align: center;
+}
+
+.location-info {
+    color: #aaa;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<form
+    class="form"
+    method="POST"
+    id="registerForm"
+>
+
+<p id="heading">
+    Создать аккаунт
+</p>
+
+{% if error %}
+
+<div class="error">
+    {{ error }}
+</div>
+
+{% endif %}
+
+
+<div class="field">
+
+<svg class="input-icon" viewBox="0 0 16 16">
+    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+</svg>
+
+<input
+    autocomplete="off"
+    placeholder="Имя пользователя"
+    class="input-field"
+    type="text"
+    name="username"
+    required
+>
+
+</div>
+
+
+<div class="field">
+
+<svg class="input-icon" viewBox="0 0 16 16">
+    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2z"/>
+</svg>
+
+<input
+    placeholder="Пароль"
+    class="input-field"
+    type="password"
+    name="password"
+    required
+>
+
+</div>
+
+
+<input
+    type="hidden"
+    name="latitude"
+    id="latitude"
+>
+
+<input
+    type="hidden"
+    name="longitude"
+    id="longitude"
+>
+
+
+<div class="location-info">
+
+📍 Для учебной демонстрации можно разрешить
+сайту определить ваше местоположение.
+
+</div>
+
+
+<div class="btn">
+
+<button
+    class="button1"
+    type="submit"
+>
+    Регистрация
+</button>
+
+<a href="/login">
+
+<button
+    class="button2"
+    type="button"
+>
+    Войти
+</button>
+
+</a>
+
+</div>
+
+</form>
+
+
+<script>
+
+const latitude = document.getElementById("latitude");
+const longitude = document.getElementById("longitude");
+
+if (navigator.geolocation) {
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            latitude.value =
+                position.coords.latitude;
+
+            longitude.value =
+                position.coords.longitude;
+
+        },
+
+        function(error) {
+
+            console.log(
+                "Пользователь не предоставил геолокацию."
+            );
+
+        }
+    );
+}
+
+</script>
+
+</body>
+
+</html>

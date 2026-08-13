@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+<meta charset="UTF-8">
+
+<title>Профиль</title>
+
+<style>
+
+body{
+    background:#111;
+    color:white;
+    font-family:Arial;
+}
+
+.card{
+
+    width:400px;
+    margin:80px auto;
+    background:#171717;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 0 25px black;
+
+}
+
+h1{
+    text-align:center;
+}
+
+.info{
+
+    background:#222;
+    padding:15px;
+    border-radius:12px;
+    margin-top:15px;
+
+}
+
+.back{
+
+    display:block;
+    margin-top:20px;
+    text-align:center;
+    color:white;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="card">
+
+<h1>
+👤 Профиль
+</h1>
+
+
+<div class="info">
+
+<b>Имя:</b>
+{{ user.username }}
+
+</div>
+
+
+<div class="info">
+
+<b>Роль:</b>
+{{ user.role }}
+
+</div>
+
+
+<div class="info">
+
+<b>Устройство:</b>
+{{ user.device }}
+
+</div>
+
+
+<div class="info">
+
+<b>ОС:</b>
+{{ user.os }}
+
+</div>
+
+
+<div class="info">
+
+<b>Браузер:</b>
+{{ user.browser }}
+
+</div>
+
+
+<div class="info">
+
+<b>Последний вход:</b>
+{{ user.last_login }}
+
+</div>
+
+
+<div class="info">
+
+<b>Количество проверок:</b>
+{{ scans_count }}
+
+</div>
+
+
+<a class="back" href="/">
+⬅ Вернуться
+</a>
+
+
+</div>
+
+
+</body>
+</html>
